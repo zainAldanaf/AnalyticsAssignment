@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.analyticsassignment.Adapter.noteAdapter;
@@ -20,6 +21,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,11 +37,12 @@ public class noteMainActivity2 extends AppCompatActivity {
     int minute = calendar.get(Calendar.MINUTE);
     int second = calendar.get(Calendar.SECOND);
 
+
     ArrayList<details> items;
     noteAdapter note_adapter;
     LinearLayoutManager layoutManager = new LinearLayoutManager(this);
     RecyclerView note_rv;
-    private TextView msgTV;
+    private TextView tv;
     TextView textViewNote;
 
     @Override
@@ -57,11 +60,14 @@ public class noteMainActivity2 extends AppCompatActivity {
         items = new ArrayList<details>();
         note_adapter = new noteAdapter(this,items);
 
-        GetNoteDetails();
+
+        tv = findViewById(R.id.nameTitle);
+        String title= getIntent().getStringExtra("title");
+        GetNoteDetails(title);
     }
 
-        private void GetNoteDetails() {
-         db.collection("note")
+        private void GetNoteDetails(String title) {
+         db.collection("note").whereEqualTo("name",title)
                     .get()
                     .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override

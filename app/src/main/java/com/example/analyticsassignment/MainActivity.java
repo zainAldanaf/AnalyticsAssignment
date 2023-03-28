@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        screenTrack("HomeScreen");
 
         btn = findViewById(R.id.addressbtn);
 
@@ -62,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new addressAdapter(this,items);
         GetAllCategory();
+        screenTrack("HomeScreen");
     }
 
     private void GetAllCategory() {

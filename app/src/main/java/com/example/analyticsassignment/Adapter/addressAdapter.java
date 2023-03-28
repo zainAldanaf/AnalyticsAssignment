@@ -52,6 +52,7 @@ public class addressAdapter extends RecyclerView.Adapter<addressAdapter.ViewHold
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, noteMainActivity2.class);
+                intent.putExtra("title", data.get(position).getCategoryName());
                 context.startActivity(intent);
                 btnEvent("addressNote@","click","Button");
             }

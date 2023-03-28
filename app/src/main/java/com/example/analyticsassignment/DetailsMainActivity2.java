@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -12,12 +13,14 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
 import java.util.HashMap;
 
 public class DetailsMainActivity2 extends AppCompatActivity {
     TextView nameTv, detailsTv;
+    ImageView imageView;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAnalytics mFirebaseAnalytics;
@@ -39,10 +42,13 @@ public class DetailsMainActivity2 extends AppCompatActivity {
         nameTv = findViewById(R.id.noteName);
         detailsTv = findViewById(R.id.noteDetails);
 
+
+
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
             nameTv.setText(bundle.getString("name"));
             detailsTv.setText(bundle.getString("details"));
+
         }
     }
     public void screenTrack(String screenName){
