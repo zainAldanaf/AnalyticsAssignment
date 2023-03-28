@@ -1,5 +1,6 @@
 package com.example.analyticsassignment.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,12 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.analyticsassignment.R;
 import com.example.analyticsassignment.modal.Notes;
-import com.example.analyticsassignment.modal.details;
 import com.example.analyticsassignment.noteMainActivity2;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -27,9 +29,11 @@ public class addressAdapter extends RecyclerView.Adapter<addressAdapter.ViewHold
     private List<Notes> data;
     private LayoutInflater mInflater;
 
-    public addressAdapter(Context context, List<Notes> data) {
+
+    public addressAdapter(Context context, List<Notes> data){
         this.context = context;
         this.data = data;
+
     }
 
     @NonNull
@@ -41,10 +45,17 @@ public class addressAdapter extends RecyclerView.Adapter<addressAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        holder.name.setText(data.get(position).getCategoryName());
         Notes note = data.get(position);
-        holder.name.setText(note.getName());
-
+        holder.btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, noteMainActivity2.class);
+                context.startActivity(intent);
+                btnEvent("addressNote@","click","Button");
+            }
+        });
     }
 
     @Override
@@ -57,19 +68,15 @@ public class addressAdapter extends RecyclerView.Adapter<addressAdapter.ViewHold
 
         public TextView name;
         public Button btn;
+        public CardView card;
 
         ViewHolder(View itemView) {
             super(itemView);
-            this.name = itemView.findViewById(R.id.name);
+            this.name = itemView.findViewById(R.id.nameTitle);
+            this.card = itemView.findViewById(R.id.card);
             this.btn = itemView.findViewById(R.id.addressbtn);
 
-            btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    context.startActivity(new Intent(context,noteMainActivity2.class));
-                        btnEvent("addressNote@","click","Button");
-                }
-            });
+            itemView.setOnClickListener(this);
         }
 
         @Override
@@ -84,6 +91,9 @@ public class addressAdapter extends RecyclerView.Adapter<addressAdapter.ViewHold
         bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE,type);
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME,content);
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT,bundle);//save it at firebase
+        Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show();
 
     }
+
+
 }

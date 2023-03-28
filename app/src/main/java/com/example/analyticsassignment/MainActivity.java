@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAnalytics mFirebaseAnalytics;
 
     Calendar calendar = Calendar.getInstance();
-    ConstraintLayout HomeScreen;
 
     int hour = calendar.get(Calendar.HOUR);
     int minute = calendar.get(Calendar.MINUTE);
@@ -56,18 +55,19 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         screenTrack("HomeScreen");
 
-        textView = findViewById(R.id.name);
         btn = findViewById(R.id.addressbtn);
 
         rv = findViewById(R.id.rv);
         items = new ArrayList<Notes>();
+
         adapter = new addressAdapter(this,items);
         GetAllCategory();
     }
 
     private void GetAllCategory() {
 
-        db.collection("address").get()
+        db.collection("address")
+                .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot documentSnapshots) {
@@ -108,14 +108,6 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW,bundle);//save it at firebase
     }
 
-    public void btnEvent(String id, String type, String content) {
-        Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
-        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, type);
-        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, content);
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);//save it at firebase
-    }
-
     protected void onPause() {
         Calendar calendar = Calendar.getInstance();
         int hour2 = calendar.get(Calendar.HOUR);
@@ -148,4 +140,5 @@ public class MainActivity extends AppCompatActivity {
 
         super.onPause();
     }
+
 }

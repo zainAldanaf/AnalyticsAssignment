@@ -9,15 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.analyticsassignment.DetailsMainActivity2;
 import com.example.analyticsassignment.R;
-import com.example.analyticsassignment.modal.Notes;
 import com.example.analyticsassignment.modal.details;
-import com.example.analyticsassignment.noteMainActivity2;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.List;
@@ -29,10 +29,9 @@ public class noteAdapter extends RecyclerView.Adapter<noteAdapter.ViewHolder> {
 
     private List<details> details;
 
-    public noteAdapter(Context context, List<details> details) {
+    public noteAdapter(Context context, List<details> details){
         this.context = context;
         this.details = details ;
-
     }
 
     @NonNull
@@ -44,10 +43,9 @@ public class noteAdapter extends RecyclerView.Adapter<noteAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.name.setText(details.get(position).getName());
         holder.details.setText(details.get(position).getDetails());
-
         holder.showMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,6 +54,7 @@ public class noteAdapter extends RecyclerView.Adapter<noteAdapter.ViewHolder> {
                 intent.putExtra("details",details.get(holder.getAdapterPosition()).getDetails());
                 btnEvent("DetailsNote@","click","Button");
                 context.startActivity(intent);
+
             }
         });
     }
@@ -73,7 +72,7 @@ public class noteAdapter extends RecyclerView.Adapter<noteAdapter.ViewHolder> {
 
         ViewHolder(View itemView) {
             super(itemView);
-            this.name = itemView.findViewById(R.id.name);
+            this.name = itemView.findViewById(R.id.nameTitle);
             this.details = itemView.findViewById(R.id.details);
             this.showMore = itemView.findViewById(R.id.showMore);
         }
@@ -92,6 +91,7 @@ public class noteAdapter extends RecyclerView.Adapter<noteAdapter.ViewHolder> {
         bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE,type);
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME,content);
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT,bundle);//save it at firebase
+        Toast.makeText(context, "clicked", Toast.LENGTH_LONG).show();
 
     }
 }

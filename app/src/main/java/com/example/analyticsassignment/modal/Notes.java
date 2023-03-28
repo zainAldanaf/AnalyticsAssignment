@@ -6,6 +6,7 @@ public class Notes {
     String note;
 
     private Notes(){}
+
     public Notes(String id, String note) {
         this.id = id;
         this.note = note;
@@ -19,7 +20,7 @@ public class Notes {
         return id;
     }
 
-    public String getName() {
+    public String getCategoryName() {
         return note;
 
 }

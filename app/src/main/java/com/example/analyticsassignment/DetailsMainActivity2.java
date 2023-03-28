@@ -53,14 +53,6 @@ public class DetailsMainActivity2 extends AppCompatActivity {
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW,bundle);//save it at firebase
     }
 
-    public void btnEvent(String id, String type, String content) {
-        Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
-        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, type);
-        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, content);
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);//save it at firebase
-    }
-
     protected void onPause() {
         Calendar calendar = Calendar.getInstance();
         int hour2 = calendar.get(Calendar.HOUR);

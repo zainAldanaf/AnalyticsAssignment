@@ -5,14 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.analyticsassignment.Adapter.addressAdapter;
 import com.example.analyticsassignment.Adapter.noteAdapter;
-import com.example.analyticsassignment.modal.Notes;
 import com.example.analyticsassignment.modal.details;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,8 +29,8 @@ public class noteMainActivity2 extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAnalytics mFirebaseAnalytics;
-    Calendar calendar = Calendar.getInstance();
 
+    Calendar calendar = Calendar.getInstance();
     int hour = calendar.get(Calendar.HOUR);
     int minute = calendar.get(Calendar.MINUTE);
     int second = calendar.get(Calendar.SECOND);
@@ -40,9 +39,8 @@ public class noteMainActivity2 extends AppCompatActivity {
     noteAdapter note_adapter;
     LinearLayoutManager layoutManager = new LinearLayoutManager(this);
     RecyclerView note_rv;
-    TextView textView;
+    private TextView msgTV;
     TextView textViewNote;
-    Button detailsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,18 +50,17 @@ public class noteMainActivity2 extends AppCompatActivity {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         screenTrack("NoteScreen");
 
-        textView = findViewById(R.id.name);
-        textViewNote = findViewById(R.id.details);
-        detailsButton = findViewById(R.id.showMore);
 
+        textViewNote = findViewById(R.id.details);
 
         note_rv = findViewById(R.id.note_rv);
         items = new ArrayList<details>();
         note_adapter = new noteAdapter(this,items);
+
         GetNoteDetails();
     }
-        private void GetNoteDetails() {
 
+        private void GetNoteDetails() {
          db.collection("note")
                     .get()
                     .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -75,11 +72,14 @@ public class noteMainActivity2 extends AppCompatActivity {
                             } else {
                                 for (DocumentSnapshot documentSnapshot : documentSnapshots) {
                                     if (documentSnapshot.exists()) {
+
                                         String id = documentSnapshot.getId();
                                         String name = documentSnapshot.getString("name");
                                         String details = documentSnapshot.getString("details");
+
                                         details detail = new details( id, name,details);
                                         items.add(detail);
+
                                         note_rv.setLayoutManager(layoutManager);
                                         note_rv.setHasFixedSize(true);
                                         note_rv.setAdapter(note_adapter);
@@ -104,14 +104,6 @@ public class noteMainActivity2 extends AppCompatActivity {
         bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS,"noteMainActivity2");
 
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW,bundle);//save it at firebase
-    }
-
-    public void btnEvent(String id, String type, String content) {
-        Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
-        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, type);
-        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, content);
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);//save it at firebase
     }
 
     protected void onPause() {
